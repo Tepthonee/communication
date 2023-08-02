@@ -19,6 +19,9 @@
         "token": {
             "description": "ضع التوكن الخاص بك هنا"
         }
+        "api_id": {
+            "description": "ضع التوكن الخاص بك هنا"
+        }
     },
     "stack": "heroku-20",
     "buildpacks": [
