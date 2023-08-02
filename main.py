@@ -52,10 +52,10 @@ def DEL_BAN(user_id:int):
 	db.execute("DELETE FROM BAN_USERS WHERE user_id = ?",(user_id,))
 	con.commit()
 
-api_id = 26965358
-api_hash = "0ef9b3131e2168949a634b7d5014290f"
-
+api_id = os.environ.get("api_id")
+api_hash = os.environ.get("api_hash")
 bot = os.environ.get("token")
+id = os.environ.get("id")
 
 app = Client("hussien", api_id=api_id, api_hash=api_hash, bot_token=bot)
 
@@ -66,14 +66,14 @@ REB = ReplyKeyboardMarkup([
 	[("الغاء")]],
 	resize_keyboard=True)
 
-@app.on_message(filters.command("hsoo") & filters.private)
+@app.on_message(filters.command("start") & filters.private)
 async def START(c:Client,m:Message):
 	UserName = m.from_user.username
 	UserName = "@"+UserName if UserName else "There in no username"
 	db.execute("SELECT * FROM USERS WHERE user_id = ?", (m.from_user.id,))
 	result = db.fetchone()
 	
-	if m.from_user.id == 5575049257:
+	if m.from_user.id == id:
 		await m.reply("اليك لوحه المطور",reply_markup=REB,quote=True)
 	elif CHECK_BAND(user_id=m.from_user.id):
 		await m.reply("**تم حظرك من استخدام البوت**",quote=True)
@@ -83,12 +83,12 @@ async def START(c:Client,m:Message):
 	
 	في بوت التواصل الخاص بي
 	ارسل رسالتك وسيتم الرد عليك قريبا
-		""",reply_markup=InlineKeyboardMarkup ([[InlineKeyboardButton ("Dev",user_id=5575049257)]]),quote= True)
+		""",reply_markup=InlineKeyboardMarkup ([[InlineKeyboardButton ("Dev",user_id=id)]]),quote= True)
 	else:
 		db.execute("INSERT INTO USERS(user_id) VALUES(?)", (m.from_user.id,))
 		con.commit()
 		try:
-			await app.send_message(5575049257,f"""
+			await app.send_message(id,f"""
 		<u>«**New User**»</u>
 		
 	➣ Name : {m.from_user.first_name}
@@ -103,11 +103,11 @@ async def START(c:Client,m:Message):
 	
 	في بوت التواصل الخاص بي
 	ارسل رسالتك وسيتم الرد عليك قريبا
-		""",reply_markup=InlineKeyboardMarkup ([[InlineKeyboardButton ("Dev",user_id=5575049257)]]),quote= True)
+		""",reply_markup=InlineKeyboardMarkup ([[InlineKeyboardButton ("Dev",user_id=id)]]),quote= True)
 		
 
 	
-@app.on_message(filters.command("تفعيل التواصل","") & filters.user(5575049257) & filters.private)
+@app.on_message(filters.command("تفعيل التواصل","") & filters.user(id) & filters.private)
 async def OnTw(c:Client,m:Message):
 	db.execute("SELECT * FROM TWSEL WHERE chat_id = ?", (m.chat.id,))
 	result = db.fetchone()
@@ -118,7 +118,7 @@ async def OnTw(c:Client,m:Message):
 		con.commit()
 		await m.reply(f"مطوري {m.from_user.mention}\nتم تفعيل التواصل",quote=True)
 
-@app.on_message(filters.command("تعطيل التواصل","") & filters.user(5575049257) & filters.private)
+@app.on_message(filters.command("تعطيل التواصل","") & filters.user(id) & filters.private)
 async def OffTw(c:Client,m:Message):
 	db.execute("SELECT * FROM TWSEL WHERE chat_id = ?", (m.chat.id,))
 	result = db.fetchone()
@@ -131,7 +131,7 @@ async def OffTw(c:Client,m:Message):
 		await m.reply(f"مطوري {m.from_user.mention}\nتم تعطيل التواصل من قبل",quote=True)
 
 
-@app.on_message(filters.command("الاحصائيات","") & filters.user(5575049257) & filters.private)
+@app.on_message(filters.command("الاحصائيات","") & filters.user(id) & filters.private)
 async def StatTw(c:Client,m:Message):
 	Wait = await m.reply("Wait a second")
 	time.sleep(.5)
@@ -156,7 +156,7 @@ async def StatTw(c:Client,m:Message):
 	except:os.remove("Ban_Users.txt")
 
 
-@app.on_message(filters.command("اذاعه للكل","") & filters.user(5575049257) & filters.private)
+@app.on_message(filters.command("اذاعه للكل","") & filters.user(id) & filters.private)
 async def Broad(c:Client,m:Message):
 	db.execute("SELECT * FROM USERS")
 	users = len(db.fetchall())
@@ -177,7 +177,7 @@ async def Broad(c:Client,m:Message):
 		await m.reply(f"➣\n**<u> تم الاذاعه الي {users} من الاعضاء</u>**",reply_markup=REB)
 
 
-@app.on_message(filters.command("حظر عضو","") & filters.user(5575049257) & filters.private)
+@app.on_message(filters.command("حظر عضو","") & filters.user(id) & filters.private)
 async def Ban(c:Client,m:Message):
 	Msg = await m.chat.ask("**ارسل الان ايدي العضو المراد حظره**",reply_markup=ForceReply())
 	if Msg.text == "الغاء":
@@ -195,7 +195,7 @@ async def Ban(c:Client,m:Message):
 	except ValueError:
 		return await m.reply("**ارسل ايدي صالح للاستخدام في التلجرام**",reply_markup=REB)
 	
-@app.on_message(filters.command("الغاء حظر عضو","") & filters.user(5575049257) & filters.private)
+@app.on_message(filters.command("الغاء حظر عضو","") & filters.user(id) & filters.private)
 async def UnBan(c:Client,m:Message):
 	Msg = await m.chat.ask("**ارسل الان ايدي العضو المراد الغاء حظره**",reply_markup=ForceReply())
 	if Msg.text == "الغاء":
@@ -217,7 +217,7 @@ async def UnBan(c:Client,m:Message):
 	except:pass
 
 
-@app.on_message(filters.private & ~filters.command("start") & ~filters.user(5575049257))
+@app.on_message(filters.private & ~filters.command("start") & ~filters.user(id))
 async def Private(c:Client,m:Message):
 	db.execute("SELECT * FROM TWSEL WHERE chat_id = ?", (m.chat.id,))
 	result = db.fetchone()
@@ -227,7 +227,7 @@ async def Private(c:Client,m:Message):
 	elif result is None:
 		await m.reply("**عذرا التواصل معطل من قبل مطور البوت**",quote=True)
 	else:
-		await app.copy_message(chat_id=5575049257,
+		await app.copy_message(chat_id=id,
 		from_chat_id=m.chat.id,message_id=m.id,
 		reply_markup=InlineKeyboardMarkup([[
 		InlineKeyboardButton (m.from_user.first_name,
@@ -263,5 +263,5 @@ async def Reply(c: Client, query: CallbackQuery):
 	
 			
 
-print("😉")
+print("تم شتغل")
 app.run()
