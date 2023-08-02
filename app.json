@@ -25,6 +25,11 @@
         },
         "token": {
             "description": "ضع التوكن الخاص بك"
+        },
+        "id": {
+            "description": "ضع ايدي المطور الخاص بك",
+            "required": "False",
+            "value": ""
         }
     },
     "stack": "heroku-20",
