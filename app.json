@@ -14,14 +14,20 @@
     "repository": "https://github.com/SS7SS/Turbo-bot",
     "website": "https://t.me/hussien_pyrogram",
     "success_url": "https://t.me/hussien_pyrogram",
-    "env": {
-
-        "token": {
-            "description": "ضع التوكن الخاص بك هنا"
-        }
+        "api_hash": {
+            "description": "",
+            "value": "",
+            "required": true
+        },
         "api_id": {
-            "description": "ضع التوكن الخاص بك هنا"
-        }
+            "description": "",
+            "value": "",
+            "required": true
+        },
+        "token": {
+            "description": "",
+            "value": "",
+            "required": true
     },
     "stack": "heroku-20",
     "buildpacks": [
