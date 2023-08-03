@@ -55,7 +55,7 @@ def DEL_BAN(user_id:int):
 api_id = os.environ.get("api_id")
 api_hash = os.environ.get("api_hash")
 bot = os.environ.get("token")
-id = os.environ.get("1260465030")
+id = 1260465030
 
 app = Client("hussien", api_id=api_id, api_hash=api_hash, bot_token=bot)
 
